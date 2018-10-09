@@ -5,18 +5,21 @@ import random
 frmt = '%d-%m-%Y %H:%M:%S'
 # randomNumberPatition = random.randint(3,7)
 # print str(randomNumberPatition) + "\n"
-Users=20
+Users=30
 UsersList=[]
 UserStartTime=[]
 UserStartTimeString=[]
 UsersStartStation=[]
+UsersStartStationLetter=[]
+UsersDestinationStationLetter=[]
 UsersDestinationStation=[]
 flat_list_A=[]
 flat_list_D=[]
+totalTime=[]
 
 Atime, Dtime, AtimeString, DtimeString= ([] for i in range(4)) 
 
-List_of_Lists=[UsersList, UsersStartStation, UsersDestinationStation, AtimeString, DtimeString]
+List_of_Lists=[UsersList,  UsersStartStationLetter,  UsersDestinationStationLetter, AtimeString, DtimeString, totalTime]
 
 for i in range(Users):
     UsersList.append("User "+str(i+1))
@@ -86,34 +89,37 @@ for sublist in Dtime:
     for item in sublist:
         flat_list_D.append(item)
 
+
 # print flat_list_A
 # print "\n\n" 
 # print flat_list_D
 
 for i in range(Users):
+    td=(flat_list_D[i] - flat_list_A[i])
+    hours, minutes = td.seconds // 3600, td.seconds // 60 % 60
+    totalTime.append(str(hours)+" Hr "+str(minutes)+" min ")
     AtimeString.append(dt.datetime.strftime(flat_list_A[i], frmt))
     DtimeString.append(dt.datetime.strftime(flat_list_D[i], frmt))
-# for i in range(randomNumberPatition):
-# Atime = sample([sample_date - dt.timedelta(minutes=x, seconds=y) for x in range(3, 35) for y in range(0,60)],randomNumberPatition)
-# restTime = sample([sample_date + dt.timedelta(hours=z, minutes=x, seconds=y) for z in range(1,2) for x in range(0,60) for y in range(0,60)],randomNumberPatition)
-# temp=Users-randomNumberPatition
 
-# UserStartTime = Atime + restTime
+for i in range(Users): #Users start stations
+    if UsersStartStation[i]==0:
+        UsersStartStationLetter.append("A")
+    elif UsersStartStation[i]==1:
+        UsersStartStationLetter.append("B")
+    elif UsersStartStation[i]==2:
+        UsersStartStationLetter.append("C")
+    else:
+        UsersStartStationLetter.append("D")
 
-# random.shuffle(UserStartTime)
-# print UserStartTime
-
-# for i in range(Users):
-#     UserStartTimeString.append(dt.datetime.strftime(UserStartTime[i], frmt))
-    
-
-
-
-# timeRange = [dt.timedelta(hours=z, minutes=x, seconds=y) for z in range(16,20) if x for x in range() for y in range(0,60)]
-
-# start = sample_date - dt.timedelta(minutes=35)
-# end = sample_date - dt.timedelta(minutes=3)
-
+for i in range(Users): #Users end station
+    if UsersDestinationStation[i]==1:
+        UsersDestinationStationLetter.append("B")
+    elif UsersDestinationStation[i]==2:
+        UsersDestinationStationLetter.append("C")
+    elif UsersDestinationStation[i]==3:
+        UsersDestinationStationLetter.append("D")
+    else:
+        UsersDestinationStationLetter.append("E")
 
 
 
