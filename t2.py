@@ -163,7 +163,6 @@ print "Train  from C ----" + str(CtrainTime)
 print "Train  from D ----" + str(DtrainTime)
 print "Train  from E ----" + str(EtrainTime)
 
-
 print "\n\n" 
 for a in zip(*List_of_Lists):
     print a
