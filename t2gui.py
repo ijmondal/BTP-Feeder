@@ -175,6 +175,8 @@ def main():
 
     ListFrame = Frame(window)
     ListFrame.pack(side = BOTTOM)
+    ListFrame.destroy()
+    # for frame in ListFrame.
 
     # scrollbar = Scrollbar(window) 
     # scrollbar.pack( side = RIGHT)
@@ -211,6 +213,7 @@ label.config(font = ("Times New Roman", 22))
 label.pack()
 E1 = Entry( bd = 3)
 E1.pack()
+
 button1 = Button(text = "Submit", bg = "red", font = ("Times New Roman", 15), command = lambda : main())
 button1.pack()
 
