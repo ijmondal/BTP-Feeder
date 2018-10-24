@@ -216,8 +216,6 @@ button1 = Button(text = "Submit", bg = "red", font = ("Times New Roman", 15), co
 button1.pack()
 
 
-if __name__ == '__main__':
-    main()
 
 
 
