@@ -7,8 +7,6 @@ frmt = '%H:%M:%S'
 trainFrmt = '%d-%m-%Y %H:%M'
 
     
-
-
 def main():
     Users = int(E1.get())
     UsersList = []
@@ -133,7 +131,7 @@ def main():
         DtimeString.append(dt.datetime.strftime(flat_list_D[i], frmt))
 
 
-    print UsersFromA
+    # print UsersFromA
     for i in range(Users): #Users start stations and Cabs Allotment towards station
         if UsersStartStation[i] == 0:
             cabsTowardStation.append("Cab No."+str(random.randint(1, (UsersFromA/3)+1))+" to A")
@@ -163,11 +161,11 @@ def main():
             UsersDestinationStationLetter.append("E")
 
 
-    print "Train  from A --  -- " + dt.datetime.strftime(AtrainTime, trainFrmt)
-    print "Train  from B --  -- " + dt.datetime.strftime(BtrainTime, trainFrmt)
-    print "Train  from C --  -- " + dt.datetime.strftime(CtrainTime, trainFrmt)
-    print "Train  from D --  -- " + dt.datetime.strftime(DtrainTime, trainFrmt)
-    print "Train  from E --  -- " + dt.datetime.strftime(EtrainTime, trainFrmt)
+    print "Train from Station A --  -- " + dt.datetime.strftime(AtrainTime, trainFrmt)
+    print "Train from Station B --  -- " + dt.datetime.strftime(BtrainTime, trainFrmt)
+    print "Train from Station C --  -- " + dt.datetime.strftime(CtrainTime, trainFrmt)
+    print "Train from Station D --  -- " + dt.datetime.strftime(DtrainTime, trainFrmt)
+    print "Train from Station E --  -- " + dt.datetime.strftime(EtrainTime, trainFrmt)
     
     trainstationlist = ['A', 'B', 'C', 'D', 'E']
     trainTimeList = [AtrainTime, BtrainTime, CtrainTime, DtrainTime, EtrainTime]
@@ -183,7 +181,7 @@ def main():
     Lb = Listbox(window, bg='green', height=5, width=22)
 
     for i in xrange(len(trainstationlist)):
-        Lb.insert(END, 'Train '+trainstationlist[i]+' at '+ dt.datetime.strftime(trainTimeList[i], trainFrmt))
+        Lb.insert(END, 'Train from '+trainstationlist[i]+' at '+ dt.datetime.strftime(trainTimeList[i], trainFrmt))
 
     Lb.pack(anchor = CENTER)
 
