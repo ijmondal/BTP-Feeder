@@ -77,7 +77,7 @@ def main():
             UsersToD += 1
             if UsersStartStation[i] == 0:
                 UsersFromA += 1
-                Atime.append(sample([sample_date - dt.timedelta(minutes = x, seconds = y) for x in range(3, 35) for y in range(0, 60)], 1))
+                Atime.append(sample([sample_date  - dt.timedelta(minutes = x, seconds = y) for x in range(3, 35) for y in range(0, 60)], 1))
                 Dtime.append(sample([DtrainTime + dt.timedelta(minutes = x, seconds = y) for x in range(1, 28) for y in range(0, 60)], 1))
             elif UsersStartStation[i] == 1:
                 UsersFromB += 1
@@ -214,6 +214,10 @@ E1.pack()
 
 button1 = Button(text = "Submit", bg = "red", font = ("Times New Roman", 15), command = lambda : main())
 button1.pack()
+
+
+if __name__ == '__main__':
+    main()
 
 
 
