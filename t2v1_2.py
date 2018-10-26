@@ -25,6 +25,7 @@ numOfTrains = int(time_elapsed.total_seconds()/(TrainEvery_min*60))
 
 
 
+
 startTimefromB = startTimefromA - dt.timedelta( minutes=45)
 trainsToB=[]
 trainsToA=[]
@@ -79,7 +80,7 @@ def main(numOfStations):
     trainTimeUser=[]
     global trainsToA
     global trainsToB
-    Users=10
+    Users=30
     UsersList = []
     UserStartTime = []
     UserStartTimeString = []
@@ -103,9 +104,13 @@ def main(numOfStations):
         UsersStationsFromA.append(0)
         UsersStationsFromB.append(0)
 
-    Atime, Btime, Dtime, AtimeString, DtimeString = ([] for i in range(5)) 
+    for i in xrange(Users):
+        cabsTowardStation.append(0)
+        cabsTowardDestination.append(0)
 
-    List_of_Lists = [UsersList,  UsersStartStation,  UsersDestinationStation,  AtimeString, trainTimeUserString, DtimeString, totalTime]
+    Atime, Btime, AtimeString, DtimeString = ([] for i in range(4)) 
+
+    List_of_Lists = [UsersList,  UsersStartStation,  UsersDestinationStation, cabsTowardStation,  AtimeString, trainTimeUserString, DtimeString, totalTime]
 
     for i in range(Users): #Users List
         UsersList.append("User "+str(i+1))
@@ -182,21 +187,30 @@ def main(numOfStations):
         AtimeString.append(dt.datetime.strftime(flat_list_A[i], frmt))
         DtimeString.append(dt.datetime.strftime(flat_list_D[i], frmt))
         trainTimeUserString.append(dt.datetime.strftime(trainTimeUser[i], frmt))
+    
+    c=0
 
-    # for i in xrange(Users):
-    #     p = UsersStartStation[i]
-    #     start=Atime[i]
-    #     j=i+1
-    #     while j < Users:
-    #         if UsersStartStation[j]==p:
-    #             end = Atime[j]
-    #         else:
-    #             continue
-    #             j+=1
-    #         if time_in_range(start, end, start+dt.timedelta(minutes=15)):
-    #             cabsTowardStation.append()
+    for i in xrange(Users):
+        cabNo=random.randint(1,Users/3)
+        print cabNo
+        j+=1
+        for j in xrange(Users):
+            if trainTimeUserString[j]==trainTimeUserString[i]:
+                cabsTowardStation[i]=="Cab No."+str(cabNo)+" to station-"+str(UsersStartStation[i])
+                cabsTowardStation[j]=="Cab No."+str(cabNo)+" to station-"+str(UsersStartStation[j])
+                c+=1
 
+    print str(c)+" this" 
+           
+            
+    
+    for i in xrange(Users):
+        if cabsTowardStation[i]==0:
+            cabsTowardStation.append("Cab No."+str(random.randint(1,Users))+" to station-"+str(UsersStartStation[i]))
         
+        
+        
+    
 
 
 
@@ -270,7 +284,7 @@ def main(numOfStations):
 #     # scrollbar.config( command = Lb.yview )
 
 
-    print "\n\n" 
+    # print "\n\n" 
     for a in zip(*List_of_Lists):
         print a
 
