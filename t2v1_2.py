@@ -192,7 +192,7 @@ def main(numOfStations):
 
     for i in xrange(Users):
         cabNo=random.randint(1,Users/3)
-        print cabNo
+        # print cabNo
         j+=1
         for j in xrange(Users):
             if trainTimeUserString[j]==trainTimeUserString[i]:
