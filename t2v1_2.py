@@ -3,30 +3,19 @@ import datetime as dt
 from random import sample
 import random
 import numpy as np
-import array as arr
+from collections import Counter
 
 frmt = '%H:%M:%S'
 trainFrmt = '%d-%m-%Y %H:%M'
 
-TotalDuration = 60
-Iterations = 5
-waitAtEndStop = 15
-TrainEvery_min = 30
+# TotalDuration = 60
+# Iterations = 5
+# waitAtEndStop = 15
+# TrainEvery_min = 30
 
 
 startTimefromA = dt.datetime(2018,10,27,10,00,00,00)
-startTime = startTimefromA
-endTime = startTime + dt.timedelta(minutes=TotalDuration)
-nextTrain = endTime + dt.timedelta(minutes=waitAtEndStop)
 
-beforeTrain = startTime - dt.timedelta(minutes=TotalDuration - waitAtEndStop)
-time_elapsed=nextTrain - beforeTrain
-numOfTrains = int(time_elapsed.total_seconds()/(TrainEvery_min*60))
-
-
-
-
-startTimefromB = startTimefromA - dt.timedelta( minutes=45)
 trainsToB=[]
 trainsToA=[]
 trainsToBstring=[]
@@ -34,12 +23,21 @@ trainsToAstring=[]
 
 
 
-def TrainTimetables(numOfStations):
+def TrainTimetables(Users, TotalDuration, numOfStations, Iterations, TrainEvery_min, waitAtEndStop):
+    global startTimefromA
+    startTime = startTimefromA
+    endTime = startTime + dt.timedelta(minutes=TotalDuration)
+    nextTrain = endTime + dt.timedelta(minutes=waitAtEndStop)
+
+    beforeTrain = startTime - dt.timedelta(minutes=TotalDuration - waitAtEndStop)
+    time_elapsed=nextTrain - beforeTrain
+    numOfTrains = int(time_elapsed.total_seconds()/(TrainEvery_min*60))
+
+    startTimefromB = beforeTrain
     
 
     for i in xrange(Iterations):
-        global startTimefromA
-        global startTimefromB
+       
         trainsToB.append([])
         trainsToBstring.append([])
         trainsToA.append([])
@@ -57,10 +55,16 @@ def TrainTimetables(numOfStations):
         startTimefromB=temp2+dt.timedelta(minutes=TrainEvery_min)
 
 # TrainTimetables(10)
-
-    print np.matrix(trainsToBstring)
     print "\n"
-    print np.matrix(trainsToAstring)
+    print "##########################Train Timinigs towards B #######################"
+    for row in trainsToBstring:
+        print row
+    print "\n"
+    print "##########################Train Timinigs towards A #######################"
+    for row in trainsToAstring:
+        print row
+
+    return numOfTrains
 
         
 
@@ -72,33 +76,45 @@ def time_in_range(start, end, x):
     else:
         return start <= x or x <= end
 
+def duplicates(lst, item):
+    return [i for i, x in enumerate(lst) if x == item]
 
-def main(numOfStations):
+
+def main(Users, TotalDuration, numOfStations, Iterations, TrainEvery_min, waitAtEndStop ):
     # Users = int(E1.get())
     countA=0
     countB=0
     trainTimeUser=[]
     global trainsToA
     global trainsToB
-    Users=30
+   
     UsersList = []
     UserStartTime = []
     UserStartTimeString = []
     UsersStartStation = []
-    UsersStartStationLetter = []
-    UsersDestinationStationLetter = []
+    # UsersStartStationLetter = []
+    # UsersDestinationStationLetter = []
     UsersDestinationStation = []
     flat_list_A = []
     flat_list_D = []
     totalTime = []
     cabsTowardStation = []
     cabsTowardDestination = []
-    UsersTowardsB=[]
-    UsersTowardsA=[]
+    # UsersTowardsB=[]
+    # UsersTowardsA=[]
     trainTimeUserString=[]
+    train_reach_time = []
+    train_reach_time_string=[]
 
     UsersStationsFromA = []
     UsersStationsFromB = []
+
+    numOfTrains = TrainTimetables(Users, TotalDuration, numOfStations, Iterations, TrainEvery_min, waitAtEndStop)
+
+    print "\nnumber of trains required = "+str(numOfTrains)
+
+    
+
 
     for i in xrange(numOfStations):
         UsersStationsFromA.append(0)
@@ -110,13 +126,13 @@ def main(numOfStations):
 
     Atime, Btime, AtimeString, DtimeString = ([] for i in range(4)) 
 
-    List_of_Lists = [UsersList,  UsersStartStation,  UsersDestinationStation, cabsTowardStation,  AtimeString, trainTimeUserString, DtimeString, totalTime]
+    List_of_Lists = [UsersList,  UsersStartStation,  UsersDestinationStation, cabsTowardStation, AtimeString, trainTimeUserString, train_reach_time_string, cabsTowardDestination, DtimeString,  totalTime]
 
     for i in range(Users): #Users List
         UsersList.append("User "+str(i+1))
 
     
-    TrainTimetables(numOfStations)
+    
 
     i=0
 
@@ -145,6 +161,7 @@ def main(numOfStations):
             tempA = random.randint(0, Iterations-1)
 
             trainTimeUser.append(trainsToB[tempA][UsersStartStation[i]])
+            train_reach_time.append(trainsToB[tempA][UsersDestinationStation[i]])
     
             Atime.append(sample([ trainTimeUser[i] - dt.timedelta(minutes = x, seconds = y) for x in range(3, 29) for y in range(0, 60) ], 1))
             Btime.append(sample([ trainTimeUser[i]+ dt.timedelta(minutes=(TotalDuration/float(numOfStations))*stationGaps) + dt.timedelta(minutes = x, seconds = y) for x in range(3, 29) for y in range(0, 60) ], 1))
@@ -160,6 +177,7 @@ def main(numOfStations):
             temp = random.randint(0, Iterations-1)
 
             trainTimeUser.append(trainsToA[temp][(numOfStations) - UsersStartStation[i]-1])
+            train_reach_time.append(trainsToA[temp][(numOfStations) - UsersDestinationStation[i]-1])
     
             Atime.append(sample([ trainTimeUser[i] - dt.timedelta(minutes = x, seconds = y) for x in range(3, 29) for y in range(0, 60) ], 1))
             Btime.append(sample([ trainTimeUser[i] + dt.timedelta(minutes=(TotalDuration/float(numOfStations))*stationGaps) + dt.timedelta(minutes = x, seconds = y) for x in range(3, 29) for y in range(0, 60) ], 1))
@@ -187,26 +205,43 @@ def main(numOfStations):
         AtimeString.append(dt.datetime.strftime(flat_list_A[i], frmt))
         DtimeString.append(dt.datetime.strftime(flat_list_D[i], frmt))
         trainTimeUserString.append(dt.datetime.strftime(trainTimeUser[i], frmt))
+        train_reach_time_string.append(dt.datetime.strftime(train_reach_time[i], frmt))
     
-    c=0
-
-    for i in xrange(Users):
-        cabNo=random.randint(1,Users/3)
-        # print cabNo
-        j+=1
-        for j in xrange(Users):
-            if trainTimeUserString[j]==trainTimeUserString[i]:
-                cabsTowardStation[i]=="Cab No."+str(cabNo)+" to station-"+str(UsersStartStation[i])
-                cabsTowardStation[j]=="Cab No."+str(cabNo)+" to station-"+str(UsersStartStation[j])
-                c+=1
-
-    print str(c)+" this" 
-           
-            
+  
+    ############################################# Assigning CABS TO USERS#######################
+                    # -------cabs towards station-------
+    sameTrainsFromA = dict((x, duplicates(trainTimeUserString, x)) for x in set(trainTimeUserString) if trainTimeUserString.count(x) > 1)
+    trainCounterFromA = dict(Counter(trainTimeUserString))
     
+    for keys in sameTrainsFromA.keys():
+        
+        c=trainCounterFromA[keys]
+        # print c
+        cabNo=random.randint(1,(c/3)+1)
+        for i in sameTrainsFromA[keys]:
+            cabsTowardStation[i] = "Cab No."+str(cabNo)+"|"+str(UsersStartStation[i])
+
+
     for i in xrange(Users):
         if cabsTowardStation[i]==0:
-            cabsTowardStation.append("Cab No."+str(random.randint(1,Users))+" to station-"+str(UsersStartStation[i]))
+            cabsTowardStation[i] = "Cab No."+str(random.randint(1,(Users/3)+1))+"|"+str(UsersStartStation[i])
+
+        # -------cabs towards Destination-------
+    sameTrainsTowardsDestination = dict((x, duplicates(train_reach_time_string, x)) for x in set(train_reach_time_string) if train_reach_time_string.count(x) > 1)
+    trainCounterTowardsDestination = dict(Counter(train_reach_time_string))
+
+    for keys in sameTrainsTowardsDestination.keys():
+        
+        c=trainCounterTowardsDestination[keys]
+        # print c
+        cabNo=random.randint(1,(c/3)+1)
+        for i in sameTrainsTowardsDestination[keys]:
+            cabsTowardDestination[i] = "Cab No."+str(cabNo)+"||"+str(UsersDestinationStation[i])
+
+    for i in xrange(Users):
+        if cabsTowardDestination[i]==0:
+            cabsTowardDestination[i] = "Cab No."+str(random.randint(1,(Users/3)+1))+"|"+str(UsersDestinationStation[i])
+
         
         
         
@@ -288,14 +323,30 @@ def main(numOfStations):
     for a in zip(*List_of_Lists):
         print a
 
-    print countA, countB
-    print numOfTrains
+    print "\nNumber of people towards B = "+str(countA)
+    print "\nNumber of people towards A = "+str(countB)
+    print "-----Number of People at Every station going towards B----- "
     print UsersStationsFromA
+    print "\n"
+    print "-----Number of People at Every station going towards A----- "
     print UsersStationsFromB
   
 
 if __name__ == '__main__':
-    main(10)
+    Users = input('Enter number of Users:  ')
+    TotalDuration = input('Enter Duration of time to travel from one End to another(min):  ')
+    numOfStations = input('Enter number of Stations:  ')
+    Iterations = input('Enter number of Iterations:   ')
+    TrainEvery_min = input('Enter Frequency of Train(min):  ')
+    waitAtEndStop = input('Enter wait Time at each stop(min):  ')
+    print "\n"
+    # Users
+#     TotalDuration = 60
+# Iterations = 5
+# waitAtEndStop = 15
+# TrainEvery_min = 30
+
+    main(Users, TotalDuration, numOfStations, Iterations, TrainEvery_min, waitAtEndStop)
     
  
 # # Users = input("Enter no of Users: ")
