@@ -4,6 +4,7 @@ from random import sample
 import random
 
 frmt = '%H:%M:%S'
+Frmt = '%H:%M'
 trainFrmt = '%d-%m-%Y %H:%M'
 
     
@@ -181,7 +182,7 @@ def main():
     Lb = Listbox(window, bg='green', height=5, width=22)
 
     for i in xrange(len(trainstationlist)):
-        Lb.insert(END, 'Train from '+trainstationlist[i]+' at '+ dt.datetime.strftime(trainTimeList[i], trainFrmt))
+        Lb.insert(END, 'Train from '+trainstationlist[i]+' at '+ dt.datetime.strftime(trainTimeList[i], Frmt))
 
     Lb.pack(anchor = CENTER)
 
