@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+{%extends "base.html"%}
+
+<!-- {% load crispy_forms_tags %} -->
+
+{% block body_block %}
+<title>Train Timetable</title>
+<div class="container">
+  <br><br><br>
+    <div class="jumbotron">
+        <h2 align="center">Train Timinigs towards B</h2>
+        <div style='overflow-x: auto; white-space: nowrap'>
+            <table class="table table-bordered table-striped">
+                <thead>
+                    {% for i in n %}
+                        <th>{{i}}</th>
+                    {% endfor %}
+                </thead>
+                {% for i in data.trainsToBstring%}
+                    <tr>
+                        {% for j in i%}
+                        <td> {{j}} </td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+
+    
+</div>
+
+<div class="container">
+    <div class="jumbotron">
+        <h2 align="center">Train Timinigs towards A</h2>
+        <div style='overflow-x: auto; white-space: nowrap'>
+            <table class="table table-bordered table-striped">
+                <thead>
+                    {% for i in n %}
+                        <th>{{i}}</th>
+                    {% endfor %}
+                </thead>
+                {% for i in data.trainsToAstring%}
+                    <tr>
+                        {% for j in i%}
+                        <td> {{j}} </td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="jumbotron">
+        <h2 align="center"><b>General Stats</b></h2>
+        <h3 align="center">Optimal Number of Trains required : {{data.numOfTrains}}</h3>
+        <h3 align="center">Number of people going towards B : {{data.countA}}</h3>
+        <div style='overflow-x:scroll; white-space: nowrap'>
+            <table class="table table-bordered table-striped">
+                <thead>
+                    {% for i in n %}
+                        <th>{{i}}</th>
+                    {% endfor %}
+                </thead>
+                <tr>
+                    {% for j in data.UsersStationsFromA %}
+                        
+                        <td> {{j}} </td>
+                        
+                    {% endfor %}
+                </tr> 
+            </table>
+        </div>
+        <h3 align="center">Number of people going towards A : {{data.countB}}</h3>
+        <div style='overflow-x:scroll; white-space: nowrap'>
+            <table class="table table-bordered table-striped">
+                <thead>
+                    {% for i in n %}
+                        <th>{{i}}</th>
+                    {% endfor %}
+                </thead>
+                <tr>
+                    {% for j in data.UsersStationsFromB %}
+                        
+                        <td> {{j}} </td>
+                        
+                    {% endfor %}
+                </tr> 
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div>
+        <h2 align="center"><b>User Stats</b></h2>
+        <div style='overflow-x:scroll; white-space: nowrap'>
+            <table class="table table-bordered table-striped">
+                    <thead>
+                        <th>Users</th>
+                        <th>Start Station</th>
+                        <th>Arrival station</th>
+                        <th>cab to station</th>
+                        <th>Cab-Speed(up)</th>
+                        <th>Dist to Station</th>
+                        <th>Start Time</th>
+                        <th>Train time</th>
+                        <th>Train reach time</th>
+                        <th>Cab from Station</th>
+                        <th>Cab-Speed(down)</th>
+                        <th>Reach time</th>
+                        <th>Total time taken</th>
+
+                        </thead>
+                    </thead> 
+                    
+                    {% for i in data.main_list %}
+                        <tr>
+                            {% for j in i %}
+                                <td> {{j}} </td>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %} 
+                    
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+{% endblock %}

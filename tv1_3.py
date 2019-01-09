@@ -1,4 +1,4 @@
-from Tkinter import *
+# from Tkinter import *
 import datetime as dt
 from random import sample
 import random
@@ -316,7 +316,8 @@ def main(Users, TotalDuration, numOfStations, Iterations, TrainEvery_min, waitAt
 #     # scrollbar.config( command = Lb.yview )
 
 
-    # print "\n\n" 
+    # print "\n\n"
+   
     for a in zip(*List_of_Lists):
         print a
 
