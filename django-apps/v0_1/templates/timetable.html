@@ -5,7 +5,7 @@
 
 {% block body_block %}
 <title>Train Timetable</title>
-<div class="container">
+<div id="section1" class="container">
   <br><br><br>
     <div class="jumbotron">
         <h2 align="center">Train Timinigs towards B</h2>
@@ -30,7 +30,7 @@
     
 </div>
 
-<div class="container">
+<div id="section2" class="container">
     <div class="jumbotron">
         <h2 align="center">Train Timinigs towards A</h2>
         <div style='overflow-x: auto; white-space: nowrap'>
@@ -52,11 +52,11 @@
     </div>
 </div>
 
-<div class="container">
+<div id="section3" class="container">
     <div class="jumbotron">
         <h2 align="center"><b>General Stats</b></h2>
         <h3 align="center">Optimal Number of Trains required : {{data.numOfTrains}}</h3>
-        <h3 align="center">Number of people going towards B : {{data.countA}}</h3>
+        <h3 align="center">Number of people at every station going towards B : {{data.countA}}</h3>
         <div style='overflow-x:scroll; white-space: nowrap'>
             <table class="table table-bordered table-striped">
                 <thead>
@@ -73,7 +73,8 @@
                 </tr> 
             </table>
         </div>
-        <h3 align="center">Number of people going towards A : {{data.countB}}</h3>
+
+        <h3 align="center">Number of people at every station going towards A : {{data.countB}}</h3>
         <div style='overflow-x:scroll; white-space: nowrap'>
             <table class="table table-bordered table-striped">
                 <thead>
@@ -93,7 +94,7 @@
     </div>
 </div>
 
-<div class="container">
+<div id="section4" class="container">
     <div>
         <h2 align="center"><b>User Stats</b></h2>
         <div style='overflow-x:scroll; white-space: nowrap'>
@@ -109,6 +110,7 @@
                         <th>Train time</th>
                         <th>Train reach time</th>
                         <th>Cab from Station</th>
+                        <th>Dist-Station to Dest</th>
                         <th>Cab-Speed(down)</th>
                         <th>Reach time</th>
                         <th>Total time taken</th>

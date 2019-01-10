@@ -97,6 +97,8 @@ def index(request):
             CabsSpeedDestList.append(0)
             CabsSpeedStationList.append(0)
             AusersDist.append(0)
+            BusersDist.append(0)
+
 
         Atime, Btime, AtimeString, DtimeString = ([] for i in range(4)) 
 
@@ -111,9 +113,9 @@ def index(request):
         while i < Users:
             j=i 
 
-            UsersDtemp = random.randint(1, numOfStations-1)
-            UsersAtemp = random.randint(0,numOfStations-2)
-
+            UsersDtemp = random.randint(0, numOfStations-1)
+            UsersAtemp = random.randint(0,numOfStations-1)
+            
             if UsersAtemp == UsersDtemp:
                 i=j
                 continue
@@ -134,24 +136,23 @@ def index(request):
                 train_reach_time.append(trainsToB[tempA][UsersDestinationStation[i]])
         
                 Atime.append(sample([ trainTimeUser[i] - dt.timedelta(minutes = x, seconds = y) for x in range(3, 29) for y in range(0, 60) ], 1))
-                Btime.append(sample([ trainTimeUser[i]+ dt.timedelta(minutes=(TotalDuration/float(numOfStations))*stationGaps) + dt.timedelta(minutes = x, seconds = y) for x in range(3, 29) for y in range(0, 60) ], 1))
+                Btime.append(sample([ train_reach_time[i]+ dt.timedelta(minutes=(TotalDuration/float(numOfStations))*stationGaps) + dt.timedelta(minutes = x, seconds = y) for x in range(3, 29) for y in range(0, 60) ], 1))
 
             # elif UsersStartStation[i] == UsersDestinationStation[i]:
             #     a=1
 
             else:
-                UsersStationsFromB[(numOfStations) - UsersStartStation[i]-1] = int(float(UsersStationsFromB[(numOfStations) - UsersStartStation[i]-1]) + 1)
+                UsersStationsFromB[(numOfStations) - UsersAtemp-1] = int(float(UsersStationsFromB[(numOfStations) -UsersAtemp-1])+1 )
                 countB+=1
                 stationGaps = UsersStartStation[i] - UsersDestinationStation[i]
 
                 temp = random.randint(0, Iterations-1)
 
-                trainTimeUser.append(trainsToA[temp][(numOfStations) - UsersStartStation[i]-1])
-                train_reach_time.append(trainsToA[temp][(numOfStations) - UsersDestinationStation[i]-1])
-        
-                Atime.append(sample([ trainTimeUser[i] - dt.timedelta(minutes = x, seconds = y) for x in range(3, 29) for y in range(0, 60) ], 1))
-                Btime.append(sample([ trainTimeUser[i] + dt.timedelta(minutes=(TotalDuration/float(numOfStations))*stationGaps) + dt.timedelta(minutes = x, seconds = y) for x in range(3, 29) for y in range(0, 60) ], 1))
+                trainTimeUser.append(trainsToA[temp][(numOfStations) - UsersAtemp-1])
+                train_reach_time.append(trainsToA[temp][(numOfStations-1) - UsersAtemp])
 
+                Atime.append(sample([ trainTimeUser[i] - dt.timedelta(minutes = x, seconds = y) for x in range(3, 29) for y in range(0, 60) ], 1))
+                Btime.append(sample([ train_reach_time[i] + dt.timedelta(minutes=(TotalDuration/float(numOfStations))*stationGaps) + dt.timedelta(minutes = x, seconds = y) for x in range(3, 29) for y in range(0, 60) ], 1))
             i += 1
         
 
@@ -244,18 +245,18 @@ def index(request):
         for i in xrange(Users):
             AusersDist[i]=(AtimeGap[i].total_seconds()/3600) * CabsSpeedStationList[i]
 
-        # for i in xrange(Users):
-        #     BtimeGap.append(train_reach_time[i]-flat_list_D[i])
-        # for i in xrange(Users):
-        #     BusersDist[i]=(BtimeGap[i].total_seconds()/3600) * CabsSpeedDestList[i]
+        for i in xrange(Users):
+            BtimeGap.append(flat_list_D[i]-train_reach_time[i])
+        for i in xrange(Users):
+            BusersDist[i]=(BtimeGap[i].total_seconds()/3600) * CabsSpeedDestList[i]
 
         
         # print "\n\n" 
 # List_of_Lists = [UsersList,  UsersStartStation,  UsersDestinationStation, cabsTowardStation, CabsSpeedStationList, AusersDist, AtimeString, trainTimeUserString, train_reach_time_string, cabsTowardDestination, CabsSpeedStationList, DtimeString,  totalTime]
 
-        UsersStartStationString = [str(i) for i in UsersStartStation]
+        # UsersStartStationString = [str(i) for i in UsersStartStation]
         
-        List_of_Lists = [UsersList,  UsersStartStationString,  UsersDestinationStation, cabsTowardStation, CabsSpeedStationList, AusersDist, AtimeString, trainTimeUserString, train_reach_time_string, cabsTowardDestination, CabsSpeedDestList, DtimeString, totalTime]
+        List_of_Lists = [UsersList, UsersStartStation,  UsersDestinationStation, cabsTowardStation, CabsSpeedStationList, AusersDist, AtimeString, trainTimeUserString, train_reach_time_string, cabsTowardDestination, BusersDist, CabsSpeedDestList, DtimeString, totalTime]
         main_list = zip(*List_of_Lists)
 
         print main_list
@@ -269,14 +270,14 @@ def index(request):
         print UsersStationsFromA
         print "\n"
         print "-----Number of People at Every station going towards A----- "
-        print UsersStationsFromB
+        print UsersStationsFromB[::-1]
         
         # for i in xrange(nu)
         data1={
             'countA':countA,
             'countB':countB,
             'UsersStationsFromA':UsersStationsFromA,
-            'UsersStationsFromB':UsersStationsFromB,
+            'UsersStationsFromB':UsersStationsFromB[::-1],
             'Users':Users,
             'TotalDuration':TotalDuration,
             'numOfStations':numOfStations,
@@ -294,7 +295,7 @@ def index(request):
             'train_reach_time_string':train_reach_time_string,
             'cabsTowardDestination':cabsTowardDestination,
             'CabsSpeedDestList':CabsSpeedDestList,
-            # 'BusersDist':BusersDist,
+            'BusersDist':BusersDist,
             'DtimeString':DtimeString,
             'totalTime':totalTime,
             'trainsToAstring':trainsToAstring,
@@ -304,7 +305,7 @@ def index(request):
             'main_list':main_list,
         }
         print len(data1['Iterations'])
-        return render(request, 'timetable.html',context={'data':data1,'n':["Station "+str(i+1) for i in range(numOfStations)]
+        return render(request, 'timetable.html',context={'data':data1,'n':["Station "+str(i) for i in range(numOfStations)]
         })
 #  Users = int(data.get('Users'))
 #         TotalDuration = int(data.get('TotalDuration'))
@@ -322,7 +323,7 @@ def TrainTimetables(Users, TotalDuration, numOfStations, Iterations, TrainEvery_
     #Calculating optimal number of trains required
     # trainsToAstring
     # trainsToBstring
-    startTimefromA = dt.datetime(2018,10,27,10,00,00,00)
+    startTimefromA = dt.datetime(2019,1,10,5,00,00,00)
     startTime = startTimefromA
     endTime = startTime + dt.timedelta(minutes=TotalDuration)
     nextTrain = endTime + dt.timedelta(minutes=waitAtEndStop)

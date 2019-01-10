@@ -4,44 +4,45 @@
 <!-- {% load crispy_forms_tags %} -->
 
 {% block body_block %}
-
+<br><br><br>
 
     <div class="container">
         <div class="jumbotron">
-            <h1>Intelligent transport</h1>
-            <p>
-                project details
+            <h2 align="center">Simulator for Metro Stations</h2>
+            <p align="center">
+                
             </p>
         </div>
     </div>
 
     <div class="container">
-        <form method="POST" action="" class="needs-validation" novalidate>
+        <form id="formData" role="form" data-toggle="validator" method="POST" action="">
                 {% csrf_token %}
             <div class="form-group">
                 <label for="Users">Number of Users</label>
-                <input type="number" class="form-control" id="Users" name="Users" placeholder="Enter num > 1">
-               
+                <input type="number" min="1" class="form-control" id="Users" name="Users" placeholder="Enter num > 1" required>
+                
+            
             </div>
 
              <div class="form-group">
                     <label for=TotalDuration>Enter Duration of time to travel from one End to another</label>
-                    <input type="number" class="form-control" id="TotalDuration" name="TotalDuration" placeholder="In Minutes">
+                    <input type="number" min="1" class="form-control" id="TotalDuration" name="TotalDuration" placeholder="In Minutes" required>
             </div> 
 
             <div class="form-group">
                     <label for="numOfStations">Enter number of Stations</label>
-                    <input type="number" class="form-control" id="numOfStations" name="numOfStations" placeholder="Enter num > 1">
+                    <input type="number" min="1" class="form-control" id="numOfStations" name="numOfStations" placeholder="Enter num > 1" required>
             </div>
             
             <div class="form-group">
                     <label for="Iterations">Enter number of Iterations</label>
-                    <input type="number" class="form-control" id="Iterations" name="Iterations" placeholder="Enter num > 1">
+                    <input type="number" min="1" class="form-control" id="Iterations" name="Iterations" placeholder="Enter num > 1" required>
             </div>
             
             <div class="form-group">
                     <label for="TrainEvery_min">Enter Frequency of Train (Timegap between two trains)</label>
-                    <input type="number" class="form-control" id="TrainEvery_min" name="TrainEvery_min" placeholder="In Minutes">
+                    <input type="number" min="1" class="form-control" id="TrainEvery_min" name="TrainEvery_min" placeholder="In Minutes"required>
             </div> 
             
             <!-- <div class="form-group">
@@ -51,38 +52,36 @@
 
             <div class="form-group">
                     <label for="waitAtEndStop">Enter wait Time of Train at End stop</label>
-                    <input type="number" class="form-control" id="waitAtEndStop" name="waitAtEndStop" placeholder="In Minutes">
+                    <input type="number" min="1" class="form-control" id="waitAtEndStop" name="waitAtEndStop" placeholder="In Minutes" required>
             </div> 
             <button type="submit" class="btn btn-primary">Submit</button>
 
         </form>
     </div>
 
-
-
-    <script>
-            // Example starter JavaScript for disabling form submissions if there are invalid fields
-            (function() {
-              'use strict';
-              window.addEventListener('load', function() {
-                // Fetch all the forms we want to apply custom Bootstrap validation styles to
-                var forms = document.getElementsByClassName('needs-validation');
-                // Loop over them and prevent submission
-                var validation = Array.prototype.filter.call(forms, function(form) {
-                  form.addEventListener('submit', function(event) {
-                    if (form.checkValidity() === false) {
-                      event.preventDefault();
-                      event.stopPropagation();
-                    }
-                    form.classList.add('was-validated');
-                  }, false);
-                });
-              }, false);
-            })();
-            </script>
+    <!-- <script>
+        const formData = document.getElementById('formData');
+        const Users = document.getElementById('Users');
+        const okButton = document.getElementById('okButton');
+          
+        emailField.addEventListener('keyup', function (event) {
+          isValidEmail = emailField.checkValidity();
+          
+          if ( isValidEmail ) {
+            okButton.disabled = false;
+          } else {
+            okButton.disabled = true;
+          }
+        });
+          
+        okButton.addEventListener('click', function (event) {
+          signUpForm.submit();
+        });
+        </script> -->
 
 
 
+    
 
 
 {% endblock %}

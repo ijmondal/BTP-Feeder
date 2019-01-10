@@ -115,6 +115,8 @@ def main(Users, TotalDuration, numOfStations, Iterations, TrainEvery_min, waitAt
     CabsSpeedStationList = []
     AtimeGap=[]
     AusersDist=[]
+    BusersDist = []
+    BtimeGap=[]
     
         
    # --------------------------------------------------------end of declaring variables---------------------------
@@ -137,10 +139,11 @@ def main(Users, TotalDuration, numOfStations, Iterations, TrainEvery_min, waitAt
         CabsSpeedDestList.append(0)
         CabsSpeedStationList.append(0)
         AusersDist.append(0)
+        BusersDist.append(0)
 
     Atime, Btime, AtimeString, DtimeString = ([] for i in range(4)) 
 
-    List_of_Lists = [UsersList,  UsersStartStation,  UsersDestinationStation, cabsTowardStation, CabsSpeedStationList, AusersDist, AtimeString, trainTimeUserString, train_reach_time_string, cabsTowardDestination, CabsSpeedStationList, DtimeString,  totalTime]
+    List_of_Lists = [UsersList,  UsersStartStation,  UsersDestinationStation, cabsTowardStation, CabsSpeedStationList, AusersDist, AtimeString, trainTimeUserString, train_reach_time_string, cabsTowardDestination, CabsSpeedStationList, BusersDist, DtimeString,  totalTime]
 
     for i in range(Users): #Users List
         UsersList.append("User "+str(i+1))
@@ -151,8 +154,8 @@ def main(Users, TotalDuration, numOfStations, Iterations, TrainEvery_min, waitAt
     while i < Users:
         j=i 
 
-        UsersDtemp = random.randint(1, numOfStations-1)
-        UsersAtemp = random.randint(0,numOfStations-2)
+        UsersDtemp = random.randint(0, numOfStations-1)
+        UsersAtemp = random.randint(0,numOfStations-1)
 
         if UsersAtemp == UsersDtemp:
             i=j
@@ -174,7 +177,7 @@ def main(Users, TotalDuration, numOfStations, Iterations, TrainEvery_min, waitAt
             train_reach_time.append(trainsToB[tempA][UsersDestinationStation[i]])
     
             Atime.append(sample([ trainTimeUser[i] - dt.timedelta(minutes = x, seconds = y) for x in range(3, 29) for y in range(0, 60) ], 1))
-            Btime.append(sample([ trainTimeUser[i]+ dt.timedelta(minutes=(TotalDuration/float(numOfStations))*stationGaps) + dt.timedelta(minutes = x, seconds = y) for x in range(3, 29) for y in range(0, 60) ], 1))
+            Btime.append(sample([ train_reach_time[i]+ dt.timedelta(minutes=(TotalDuration/float(numOfStations))*stationGaps) + dt.timedelta(minutes = x, seconds = y) for x in range(3, 29) for y in range(0, 60) ], 1))
 
         # elif UsersStartStation[i] == UsersDestinationStation[i]:
         #     a=1
@@ -190,7 +193,7 @@ def main(Users, TotalDuration, numOfStations, Iterations, TrainEvery_min, waitAt
             train_reach_time.append(trainsToA[temp][(numOfStations) - UsersDestinationStation[i]-1])
     
             Atime.append(sample([ trainTimeUser[i] - dt.timedelta(minutes = x, seconds = y) for x in range(3, 29) for y in range(0, 60) ], 1))
-            Btime.append(sample([ trainTimeUser[i] + dt.timedelta(minutes=(TotalDuration/float(numOfStations))*stationGaps) + dt.timedelta(minutes = x, seconds = y) for x in range(3, 29) for y in range(0, 60) ], 1))
+            Btime.append(sample([ train_reach_time[i] + dt.timedelta(minutes=(TotalDuration/float(numOfStations))*stationGaps) + dt.timedelta(minutes = x, seconds = y) for x in range(3, 29) for y in range(0, 60) ], 1))
 
         i += 1
     
@@ -283,6 +286,11 @@ def main(Users, TotalDuration, numOfStations, Iterations, TrainEvery_min, waitAt
         AtimeGap.append(trainTimeUser[i]-flat_list_A[i])
     for i in xrange(Users):
         AusersDist[i]=(AtimeGap[i].total_seconds()/3600) * CabsSpeedStationList[i]
+    
+    for i in xrange(Users):
+        BtimeGap.append(flat_list_D[i] - train_reach_time[i])
+    for i in xrange(Users):
+        BusersDist[i]=(BtimeGap[i].total_seconds()/3600) * CabsSpeedDestList[i]
 
 
 
@@ -327,7 +335,7 @@ def main(Users, TotalDuration, numOfStations, Iterations, TrainEvery_min, waitAt
     print UsersStationsFromA
     print "\n"
     print "-----Number of People at Every station going towards A----- "
-    print UsersStationsFromB
+    print UsersStationsFromB[::-1]
   
 
 if __name__ == '__main__':
